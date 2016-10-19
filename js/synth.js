@@ -17,7 +17,7 @@ Synth.init = function () {
   // Create AudioContext (Initialize webaudio Context)
   if (AudioContext) {
     context = new AudioContext();
-    console.log("AudioContext available")
+    
   } else {
     alert('No audiocontext available');
   };
@@ -49,16 +49,16 @@ Synth.master = {
 Synth.set = {
 
   Oscillator : [
-  ['select', 'change', 'setType', ['sine', 'sawtooth', 'triangle', 'square'], 'left', 'Choose type: '],
-  ['button', ['mousedown'], 'setHold', 'hold', 'hold', ''],
-  ['slider', 'change', 'setVolume', 500, 0, 1000, 'volume: '], 
-  ['slider', 'change', 'setAttack', 500, 0, 1000, 'attack: '],
-  ['slider', 'change', 'setDecay', 500, 0, 1000, 'decay: '],
-  ['slider', 'change', 'setSustain', 500, 0, 1000, 'sustain: '],
-  ['slider', 'change', 'setRelease', 500, 0, 1000, 'release: ']
+  ['select', 'change', 'Type', ['sine', 'sawtooth', 'triangle', 'square'], 'triangle', 'left', 'Choose type: '],
+  ['button', ['mousedown'], 'Hold', 'hold', 'hold', ''],
+  ['slider', 'change', 'Volume', 0, 1000, 0.2, 'volume: '], 
+  ['slider', 'change', 'Attack', 0, 1000, 0.01, 'attack: '],
+  ['slider', 'change', 'Decay', 0, 1000, 0.02, 'decay: '],
+  ['slider', 'change', 'Sustain', 0, 1000, 0.4, 'sustain: '],
+  ['slider', 'change', 'Release', 0, 1000, 0.2, 'release: ']
   ], 
   Master : [
-  ['slider', 'change', 'masterVolume', 500, 0, 1000, 'volume: '], 
+  ['slider', 'change', 'masterVolume', 0, 1000, 0.5, 'volume: '], 
   ['button', 'mousedown', 'masterCompressor', 'off', '', 'compressor']
   ]
 
@@ -97,20 +97,19 @@ Synth.view.draw = function (name, element) {
   legend.appendChild(legendName);
   field.appendChild(legend);
 
-  console.log('Settings: ',elements, 'length: ', elements.length);
+  // console.log('Settings: ',elements, 'length: ', elements.length);
 
   for (var i=0; i < elements.length; i++) {
 
     var type = elements[i][0];
     var settings = elements[i].slice(2, elements[i].length);
     
-    //settings.shift(); settings.shift();
-    console.log('type', type, '\nSettings', settings, 'number', i);
-
+    // draw control with parameters and lables
     this[type](field, settings);
 
+    // go to next line, except if there is a option "left"
     if (settings[settings.length-2] !== "left")
-    field.appendChild(zeile[i]);
+                field.appendChild(zeile[i]);
 
   };
 
@@ -125,6 +124,7 @@ Synth.view.select = function (field, settings) { // id, values, labelName
   var section = field;
   var select = settings[0];
   var values = settings[1];
+  var value = settings[2];
   var labelName = settings[settings.length-1];
   var label = document.createElement("label");
 
@@ -143,8 +143,10 @@ Synth.view.select = function (field, settings) { // id, values, labelName
     this[select].appendChild(options[i]);
   };
 
-   section.appendChild(label);
-   section.appendChild(this[select]);
+  this[select].value = value;
+
+  section.appendChild(label);
+  section.appendChild(this[select]);
 
 }
 
@@ -152,9 +154,9 @@ Synth.view.slider = function (field, settings) { //id, value, min, max, labelNam
 
   var section = field;
   var slider = settings[0];
-  var value = settings[1];
-  var min = settings[2];
-  var max = settings[3];
+  var min = settings[1];
+  var max = settings[2];
+  var value = settings[3];
   var labelName = settings[settings.length-1];
   var label = document.createElement("label");
 
@@ -200,7 +202,7 @@ Synth.ctl = {};
 
 Synth.ctl.init = function() {
 
-  console.log('Init controls ...');
+  // init Master - Controls
 
   for (section in Synth.set) {
     if (section === "Master") {
@@ -216,56 +218,77 @@ Synth.ctl.init = function() {
         var type = settings[0];
         var action = settings[1];
         var id = settings[2];
+        var defaultValue = settings[5];
        
         settings = settings.slice(2, settings.length);
-        console.log('Master -', type, '\nenabled id: ', id, 'Element Nr.: ', i,
-          '\naction: ', action, '\nsettings: ', settings);
-
-        console.log('Add Eventlistner: ', id);
-        //this.master[id]=document.getElementById(id.toString());
+        // set Eventlistener 
         
         Synth.view[id].addEventListener(
           action,
-          function(e) { 
-            console.log('\nEventlistener: ', e.target.id, 
-              '\nto: ', Synth.view[e.target.id]);
-            Sound[e.target.id](e) 
+          function(e) {
+            var element = e.target;
+            var value;
+
+            if (Synth.view[e.target.id].type == "range") {  
+              value = parseInt(element.value) / parseInt(element.max);
+            } else value = e.target.value;
+
+            console.log('\nEventlistener: ', Synth.view[e.target.id].type, 
+              '\nto: ', Synth.view[e.target.id], "Value", value);
+            Synth[e.target.id](value) 
           },
             false);
 
-        //Synth.view[id].value = preset;
+        Synth[id].set(defaultValue);
+        console.log("Default Value", id, defaultValue);
 
-      }; // end of loop through elements
-    }; // end section ;aster
+      } // end of loop through elements
+    } // end section Master
   } // End loop through sections
-};
+}
 
-Synth.masterVolume = function(e) {
+Synth.masterVolume = function(value) {
 
-  var element = e.target;
-  var value = parseInt(element.value) / parseInt(element.max);
+  ctlValue = value * 1;
+  viewValue = value * 1000;
+
+  if (Synth.view.masterVolume.value != viewValue) 
+          Synth.view.masterVolume.value = viewValue;
+
+  if (Synth.master.volume != ctlValue) 
+    Synth.masterVolume.set(ctlValue);
   
+  // console.log('Volume:', Synth.master.volume);
+}
+
+Synth.masterVolume.set = function(ctlValue) {
   
-  Synth.master.volume = value;
-  Synth.master.gainNode.gain.value = value;
+  Synth.master.volume = ctlValue;
+  Synth.master.gainNode.gain.value = ctlValue;
+  Synth.masterVolume(ctlValue);
+
   console.log(Synth.master.gainNode.gain.value);
-  
-  console.log('Volume:', Synth.master.volume);
-};
+}
 
-Synth.masterCompressor = function(e) {
-
-  var element = e.target;
-  var value = element.value;
+Synth.masterCompressor = function(value) {
 
   if (value = "on") {
     this.compressorOn = false;
-    element.value = "off";
+    Synth.view.masterCompressor.value = "off";
     console.log('mastercompressor Off');
   } else {
     this.compressorOn = true;
-    element.value = "on";
+    Synth.view.masterCompressor.value = "on";
     console.log('mastercompressor On');
+  }
+}
+
+Synth.masterCompressor.set = function(value) {
+
+  if (value = "off") {
+    Synth.masterCompressor("on")
+  } else {
+    Synth.masterCompressor("off")
   }
 }
 
@@ -278,7 +301,13 @@ var Sound = function (freq, volume) {
 
   // set default Soundtype
   this.type = 'sine';
-  
+
+  this.attack = 0.01;
+  this.decay = 0.02;
+  this.sustainLevel = 0.4;
+  this.release = 0.2;
+  this.amount = 1;
+
   // create Envelope
   this.envelope = context.createGain();
   this.envelope.gain.value = 0;
@@ -299,14 +328,13 @@ var Sound = function (freq, volume) {
 Sound.prototype.adsr = function(a, d, s, r, v, sT) {
 
     // set adsr as defined or default
-    if (a) this.attack = a; else this.attack = 0.01;
-    if (d) this.decay = d; else this.decay = 0.02;
-    if (s) this.sustainLevel = s; else this.sustainLevel = 0.4;
-    if (r) this.release = r; else this.release = 0.2;
+    if (a) this.attack = a; 
+    if (d) this.decay = d; 
+    if (s) this.sustainLevel = s; 
+    if (r) this.release = r; 
 
     // set gain of envelope
-    if (v) this.amount = v; else this.amount = 1;
-
+    if (v) this.amount = v; 
     // set SustainTime if available (optional)
     if (sT) {
       this.sustainTime = sT;
@@ -321,27 +349,23 @@ Sound.prototype.adsr = function(a, d, s, r, v, sT) {
 Sound.prototype.play = function (freq, time) {
 
   if (freq) this.freq = freq;
-  if (time) this.sustainTime = time; 
-    else this.sustainTime = false;
+  //if (time) this.sustainTime = time; else this.sustainTime = false;
 
-  if (!this.active) {
+  // create oscillator and gainNode
+  this.wave = context.createOscillator();
+  this.gainNode = context.createGain();
 
-    // create oscillator and gainNode
-    this.wave = context.createOscillator();
-    this.gainNode = context.createGain();
+  // connect to GainNode and Envelope
+  this.wave.connect(this.gainNode);
+  this.gainNode.connect(this.envelope)
 
-    // connect to GainNode and Envelope
-    this.wave.connect(this.gainNode);
-    this.gainNode.connect(this.envelope)
-
-    // values of oscillator and gainNode
-    this.gainNode.gain.value = this.volume;
-    this.wave.frequency.value = this.freq;
-    this.wave.type = this.type;
-    this.gate();
-    this.wave.start(0);
-    this.active = true;
-  }
+  // values of oscillator and gainNode
+  this.gainNode.gain.value = this.volume;
+  this.wave.frequency.value = this.freq;
+  this.wave.type = this.type;
+  this.gate();
+  this.wave.start(0);
+  this.active = true;
 
   //if (!Adsr.loop) this.wave.stop(context.currentTime + this.time)
 
@@ -354,8 +378,8 @@ Sound.prototype.gate = function () {
 
     var volume = this.amount;
 
-    console.log('attack, decay, sustain, release', this.attack, this.decay, this.sustainLevel, this.release);
-    console.log('volume :', volume, 'time', time);
+    // console.log('attack, decay, sustain, release', this.attack, this.decay, this.sustainLevel, this.release);
+    // console.log('volume :', volume, 'time', time);
 
     // set on 0 Level
     this.envelope.gain.linearRampToValueAtTime(0, time);
@@ -411,93 +435,159 @@ Sound.prototype.controller = function() {
         var type = settings[0];
         var action = settings[1];
         var id = settings[2];
+        var ctl = "ctl"+id;
+        var set = "set"+id;
+        var defaultValue = settings[5];
+
        
         settings = settings.slice(2, settings.length);
         //console.log('Controller -', type, '\nenabled id: ', id, 'Element Nr.: ', i,
         // '\naction: ', action, '\nsettings: ', settings);
 
-        console.log('Add Eventlistner: ', id);
-        //this.master[id]=document.getElementById(id.toString());
-        
-        //if (!action.length) action = [action];
-
-        //for (var i; i<action.length; i++) {
-
+          // Add Eventlistener to form 
           Synth.view[id].addEventListener(
             action,
             function(e) { 
-              console.log('\nEventlistener: ', e.target.id, 
-                '\nto: ', that[e.target.id]);
-              that[e.target.id](e) 
-            },
-          false);
-        
-        //}; // End Loop with "action"
+              var ectl = "ctl"+ e.target.id;
+              var id = e.target.id;
 
-        //Synth.view[id].value = preset;
+              if (Synth.view[id].type == "range") {  
+              value = parseInt(element.value) / parseInt(element.max);
+                } else value = e.target.value;
+
+            console.log('\nEventlistener: ', Synth.view[id].type, 
+              '\nto: ', Synth.view[id], "Value", value);
+            that[ectl](value) 
+          }, false);
+        
+        console.log("id controller: ", set);
+
+        that[set](defaultValue);
+
       }; // end of loop through elements
     }; // end section Oscillator
   } // End loop through sections
 };
 
 
-Sound.prototype.setAttack = function (e) { 
-  var element = e.target;
-  var value = parseInt(element.value)/parseInt(element.max);
+Sound.prototype.ctlAttack = function (value) { 
   
-  value = (value + 0.0005) * 1.995;
-  this.attack = value 
+  var ctlValue = (value + 0.0005) * 1.995;
+  var viewValue = value * 1000;
+
+  if (Synth.view.Attack.value != viewValue) 
+          Synth.view.Attack.value = viewValue;
+
+  if (this.attack != ctlValue) 
+    this.attack = ctlValue;
+  
+ }
+
+Sound.prototype.setAttack = function(value) {
+  
+  var ctlValue = (value/1.995) - 0.0005;
+  this.ctlAttack(ctlValue);
+
+  console.log("Attack: ", value);
 }
 
-Sound.prototype.setDecay = function (e) { 
-  var element = e.target;
-  var value = parseInt(element.value)/parseInt(element.max);  
-  value = (value + 0.0005) * 1.995;
-  this.decay = value
+Sound.prototype.ctlDecay = function (value) { 
+
+  var ctlValue = (value + 0.0005) * 1.995;
+  var viewValue = value * 1000;
+
+  if (Synth.view.Decay.value != viewValue) 
+          Synth.view.Decay.value = viewValue;
+
+  if (this.decay != ctlValue) 
+        this.decay = ctlValue;
 }
 
-Sound.prototype.setSustain = function (e) { 
-  var element = e.target;
-  var value = parseInt(element.value)/parseInt(element.max);
+Sound.prototype.setDecay = function (value) { 
 
-  var value = value * 2;
-  this.sustainLevel = value
+  var ctlValue = (value/1.995) - 0.0005;
+  this.ctlDecay(ctlValue);
+
+  console.log("Decay: ", value);
 }
 
-Sound.prototype.setRelease = function (e) {
-  var element = e.target;
-  var value = parseInt(element.value)/parseInt(element.max);
+Sound.prototype.ctlSustain = function (value) { 
+  
+  var ctlValue = value * 2;
+  var viewValue = value * 1000;
 
-  var value = (value + 0.0005) * 1.995;
-  this.release = value
+  if (Synth.view.Sustain.value != viewValue) 
+          Synth.view.Sustain.value = viewValue;
+
+  if (this.sustainLevel != ctlValue) 
+      this.sustainLevel = ctlValue
 }
 
-Sound.prototype.setVolume = function (e) { 
-  var element = e.target;
-  var value = parseInt(element.value)/parseInt(element.max);
-
-  this.volume = value
+Sound.prototype.setSustain = function (value) { 
+  
+  var ctlValue = value / 2;
+  this.ctlSustain(ctlValue);
 }
 
-Sound.prototype.setHold = function (e) { 
-  var element = e.target;
-  var value = element.value;
+Sound.prototype.ctlRelease = function (value) {
+  
+  var ctlValue = (value + 0.0005) * 1.995;
+  var viewValue = value * 1000;
+
+  if (Synth.view.Release.value != viewValue) 
+      Synth.view.Release.value = viewValue;
+
+  if (this.release != ctlValue) 
+      this.release = value;
+}
+
+Sound.prototype.setRelease = function (value) {
+  
+  var ctlValue = (value/1.995) - 0.0005;
+  this.ctlRelease(ctlValue)
+  
+}
+
+Sound.prototype.ctlVolume = function (value) { 
+  
+  var ctlValue = value;
+  var viewValue = value * 1000;
+  
+  if (Synth.view.Volume.value != viewValue) 
+      Synth.view.Volume.value = viewValue;
+
+  if (this.volume != ctlValue) this.volume = value;
+}
+
+Sound.prototype.setVolume = function (value) { 
+
+  this.ctlVolume(value);
+}
+
+Sound.prototype.ctlHold = function (value) { 
 
   if (!this.hold) {
-    element.value = "----";
+    value = "----";
     this.hold = true;
   }
   else {
-    element.value = "hold";
+    value = "hold";
     this.hold = false;
     if (this.active) this.stop();
   };
+  
+  Synth.view.Hold.value = value;
+
   console.log('Hold: ', this.hold);
 }
 
-Sound.prototype.trigger = function (e) { 
-  var element = e.target;
-  var value = element.value;
+Sound.prototype.setHold = function (value) { 
+  
+  this.hold=!this.hold;
+  this.ctlHold();
+}
+
+Sound.prototype.trigger = function (value) { 
 
   if (!this.triggered && this.active) {
     this.triggered = true;
@@ -512,12 +602,31 @@ Sound.prototype.trigger = function (e) {
   console.log('Trigger: ', this.triggered);
 }
 
-Sound.prototype.setType = function (e) {
-  var element = e.target;
-  var value = element.value;
+Sound.prototype.ctlType = function (value) {
+
   this.type = value;
 
   if (this.wave) this.wave.type = this.type;
+}
+
+Sound.prototype.setType = function (value) {
+
+  this.type = value;
+
+  if (this.wave) this.wave.type = this.type;
+}
+
+
+
+Sound.prototype.setFrequency = function (value) { 
+
+   this.freq = value;
+
+   if (this.active) {
+    this.wave.frequency.cancelScheduledValues(0);
+    this.wave.frequency.value = this.freq;
+  };
+
 }
 
 var Midi =  function () {
