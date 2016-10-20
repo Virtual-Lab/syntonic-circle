@@ -23,11 +23,18 @@
       font-size: 0.75rem;
     }
 
+    header {
+      padding: 1rem;
+      float: left;
+      background-color: #ddd;
+      width: 100%;
+    }
+
     aside {
       padding: 1rem;
       float: left;
       background-color: #eee;
-      width: 250px;
+      min-width: 400px;
     }
 
     footer {
@@ -44,6 +51,9 @@
       float: left;
     }
 
+     #response {
+      float: left;
+    }
 
     /* Default link styling */
     a:link { color:#0271fb; }

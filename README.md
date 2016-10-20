@@ -1,1 +1,1 @@
-# synthonic-circle
+# syntonic-circle
