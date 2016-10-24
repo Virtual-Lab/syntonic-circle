@@ -50,11 +50,11 @@ Synth.set = {
 
   Oscillator : [
   ['select', 'change', 'Type', ['sine', 'sawtooth', 'triangle', 'square'], 'triangle', 'left', 'Choose type: '],
-  ['button', ['mousedown'], 'Hold', 'hold', 'hold', ''],
+  ['button', ['mousedown'], 'Hold', 'hold', '----', ''],
   ['slider', 'change', 'Volume', 0, 1000, 0.2, 'volume: '], 
   ['slider', 'change', 'Attack', 0, 1000, 0.01, 'attack: '],
-  ['slider', 'change', 'Decay', 0, 1000, 0.02, 'decay: '],
-  ['slider', 'change', 'Sustain', 0, 1000, 0.4, 'sustain: '],
+  ['slider', 'change', 'Decay', 0, 1000, 0.1, 'decay: '],
+  ['slider', 'change', 'Sustain', 0, 1000, 1, 'sustain-level: '],
   ['slider', 'change', 'Release', 0, 1000, 0.2, 'release: ']
   ], 
   Master : [
@@ -229,13 +229,13 @@ Synth.ctl.init = function() {
             var element = e.target;
             var value;
 
-            if (Synth.view[e.target.id].type == "range") {  
+            if (Synth.view[element.id].type == "range") {  
               value = parseInt(element.value) / parseInt(element.max);
-            } else value = e.target.value;
+            } else value = element.value;
 
-            console.log('\nEventlistener: ', Synth.view[e.target.id].type, 
-              '\nto: ', Synth.view[e.target.id], "Value", value);
-            Synth[e.target.id](value) 
+            console.log('\nEventlistener: ', Synth.view[element.id].type, 
+              '\nto: ', element.id, "Value", value);
+            Synth[element.id](value) 
           },
             false);
 
@@ -316,10 +316,9 @@ var Sound = function (freq, volume) {
 
   // optional if additional Envelope is needed:
   this.adsr2 = new this.adsr();
-  
+  this.hold = true;
   // setup controller for parameters
   this.controller();
-  this.hold = false;
   this.active = false;
 
 };
@@ -448,15 +447,18 @@ Sound.prototype.controller = function() {
           Synth.view[id].addEventListener(
             action,
             function(e) { 
-              var ectl = "ctl"+ e.target.id;
-              var id = e.target.id;
+              console.log("action");
+              var element = e.target;
+              var ectl = "ctl"+ element.id;
+              var id = element.id;
+              var value = element.value;
 
-              if (Synth.view[id].type == "range") {  
+              if (Synth.view[element.id].type == "range") {  
               value = parseInt(element.value) / parseInt(element.max);
-                } else value = e.target.value;
+                } else value = element.value;
 
             console.log('\nEventlistener: ', Synth.view[id].type, 
-              '\nto: ', Synth.view[id], "Value", value);
+              '\nto: ', id, "Value", value);
             that[ectl](value) 
           }, false);
         
@@ -480,7 +482,8 @@ Sound.prototype.ctlAttack = function (value) {
 
   if (this.attack != ctlValue) 
     this.attack = ctlValue;
-  
+  console.log("attack =", ctlValue, viewValue)
+
  }
 
 Sound.prototype.setAttack = function(value) {
@@ -575,16 +578,13 @@ Sound.prototype.ctlHold = function (value) {
     this.hold = false;
     if (this.active) this.stop();
   };
-  
-  Synth.view.Hold.value = value;
 
+  Synth.view.Hold.value = value;
   console.log('Hold: ', this.hold);
 }
 
 Sound.prototype.setHold = function (value) { 
-  
-  this.hold=!this.hold;
-  this.ctlHold();
+  this.ctlHold(value);
 }
 
 Sound.prototype.trigger = function (value) { 

@@ -172,7 +172,7 @@ function setup() {
 
   Synth.init();
 
-  var diagram = createCanvas(600, 600);
+  var diagram = createCanvas(700, 600);
   
   diagram.parent("diagram");
   
