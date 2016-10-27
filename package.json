@@ -1,0 +1,40 @@
+{
+    "name": "syntonic-spiral",
+    "version": "0.0.1",
+    "description": "syntonic spiral",
+    "main": "gulpfile.js",
+    "scripts": {
+        "start": "gulp",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "homepage": "",
+    "author": {
+        "name": "",
+        "email": ""
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "devDependencies": {
+        "browser-sync": "^2.7.6",
+        "gulp": "^3.8.11",
+        "gulp-util": "^3.0.4",
+        "gulp-sass": "^2.0.0",
+        "gulp-autoprefixer": "^3.1.0",
+        "gulp-babel": "^6.1.1",
+        "gulp-minify-css": "^1.1.1",
+        "gulp-concat": "^2.6.0",
+        "gulp-gh-pages": "^0.5.4",
+        "gulp-sequence": "^0.3.2",
+        "gulp-streamify": "0.0.5",
+        "gulp-watch": "^4.2.4",
+        "vinyl-buffer": "^1.0.0",
+        "vinyl-source-stream": "^1.1.0",
+        "motion-ui": "^1.1.1",
+        "watchify": "^3.2.1"
+    },
+    "dependencies": {
+        "foundation-sites": "^6.2.3"
+    }
+}

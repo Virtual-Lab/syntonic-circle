@@ -1,0 +1,94 @@
+//  Foundation for Sites Settings
+
+@import 'util/util';
+
+// 1. Global
+// ---------
+
+$global-font-size: 100%;
+$global-width: rem-calc(1200);
+$global-lineheight: 1.5;
+$foundation-palette: (
+  primary: rgb(85, 158, 122),
+  secondary: #777,
+  success: #3adb76,
+  warning: #ffae00,
+  alert: #ec5840,
+);
+$light-gray: #e6e6e6;
+$medium-gray: #cacaca;
+$dark-gray: #8a8a8a;
+$black: #0a0a0a;
+$white: #fefefe;
+$body-background: rgb(253, 251, 245);
+$body-font-color: $black;
+$body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+$body-antialiased: true;
+$global-margin: 1rem;
+$global-padding: 1rem;
+$global-weight-normal: 300;
+$global-weight-bold: bold;
+$global-radius: 0;
+$global-text-direction: ltr;
+$global-flexbox: true;
+$print-transparent-backgrounds: true;
+
+@include add-foundation-colors;
+
+
+// 4. Base Typography
+// ------------------
+
+//$header-font-family: $body-font-family;
+$header-font-family: "Montserrat", sans-serif;
+
+$header-font-weight: 300;
+$header-color: #444444;
+
+
+
+// 22. Menu
+// --------
+
+$menu-margin: 0;
+$menu-margin-nested: 1rem;
+$menu-item-padding: 0.7rem 1rem 1.5rem;
+$menu-item-color-active: map-get($foundation-palette, primary);
+$menu-item-background-active: $body-background;
+$menu-icon-spacing: 0.25rem;
+
+
+// 29. Slider
+// ----------
+
+$slider-width-vertical: 0.5rem;
+$slider-transition: all 0.2s ease-in-out; // 0.0 -> disable transition
+$slider-height: 0.3rem;
+$slider-background: $light-gray;
+$slider-fill-background: $medium-gray;
+$slider-handle-height: 1.0rem;
+$slider-handle-width: 1.0rem;
+$slider-handle-background: $primary-color;
+$slider-opacity-disabled: 0.25;
+$slider-radius: $global-radius;
+
+
+
+// 31. Table
+// ---------
+$table-background: $white;
+$table-color-scale: 1.25%;
+$table-border: 1px solid smart-scale($table-background, $table-color-scale);
+$table-padding: rem-calc(8 10 10);
+$table-hover-scale: 0.5%;
+$table-row-hover: darken($table-background, $table-hover-scale);
+$table-row-stripe-hover: darken($table-background, $table-color-scale + $table-hover-scale);
+$table-striped-background: smart-scale($table-background, $table-color-scale);
+$table-stripe: even;
+$table-head-background: smart-scale($table-background, $table-color-scale / 2);
+$table-foot-background: smart-scale($table-background, $table-color-scale);
+$table-head-font-color: $body-font-color;
+$show-header-for-stacked: false;
+
+
+
