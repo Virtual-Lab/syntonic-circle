@@ -5,34 +5,35 @@
     <title>Diagram</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="css/app.css" rel="stylesheet" media="all">
     <link href="css/styles.css" rel="stylesheet" media="all">
 
     <!-- Script für html5 für ältere Browser -->
-
-    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->    
 
 </head>
 <body>
+	
+    <div id="wrap">
 
-	<div id="wrap">
+    <div id="diagram"> 
 
-	<div id="diagram">
+    <h2 class="label">Pitch-Diagram</h2>
+    
+    </div>
 
-	<h2>Pitch-Diagram</h2>
-
-	</div>
-
-	<aside role = "aside" id ="synth">
+    <aside role = "aside" id = "synth">
         <form id="selection">
 
-            <h3>Sound Settings</h3>
+            <h3>Settings</h3>
 
             <p>Please enter the Base-Frequency:</p>
 
             <input id="gfreq" type="text" name="baseFreq" size = "20" value="220">
             <input type="submit" value = "set" id = "setFreq">
-        </form>
+            
+
+        </form><br />
 
      </aside>
 

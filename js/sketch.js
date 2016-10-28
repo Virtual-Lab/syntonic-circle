@@ -170,9 +170,9 @@ function setup() {
   // It is necessary for p5js with global variables to define them in setup or draw
   // -------------------------------------------------------------------------------------
 
-  Synth.init();
+  Synthesizer.init();
 
-  var diagram = createCanvas(700, 600);
+  var diagram = createCanvas(600, 600);
   
   diagram.parent("diagram");
   
