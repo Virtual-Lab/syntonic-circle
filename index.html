@@ -5,7 +5,7 @@
     <title>Diagram</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link href="css/app.css" rel="stylesheet" media="all">
+    <link href="css/app.css" rel="stylesheet" media="all">
     <link href="css/styles.css" rel="stylesheet" media="all">
 
     <!-- Script für html5 für ältere Browser -->
@@ -22,14 +22,14 @@
     <!-- <h2 class="label">Pitch-Diagram</h2> -->
     
     </div>
-    
-    <div id ="response">
+
+    <div id = "response">
     <div id = "synth">
         <form id="selection">
 
             <h3>Settings</h3>
 
-            <fieldset class="fieldset"><legend>Audio</legend>
+            <fieldset class = "fieldset"><legend>Audio</legend>
         
             <input type="button" name="soundOn" id="soundOn" value="on"> 
             <span id="instructions"></span><br />
@@ -38,35 +38,9 @@
             <label for="soundFreq">Base-Frequency: </label>
             <input type="range" name="soundFreq" id="soundFreq" min= "0" max= "800" value="180">
             <input type="text" name= "soundFreqSet" id="soundFreqSet" size = "5" value = "180" ><span id="instructions">Hz</span><br />
-            <label for = "soundSelect">Preset: </label>
-            <select name= "soundSelect" id="soundSelect">
-                    <option value="Synthesizer1">Synthesizer1</option>
-                    <option value="Synthesizer2">Synthesizer2</option>
-                    <option value="MonoSynth">MonoSynth</option>
-                    <option value="Pluck">Pluck</option>
-                    <option value="FMSynth">FMSynth</option>
-            </select>
-            </fieldset><br />
+            </fieldset> 
 
-            <fieldset class="fieldset"><legend>Demo</legend>
-            <label for="demoPlay"></label>
-            <input type="button" name="demoPlay" id="demoPlay" value="play"> 
-            <br />
-
-            <label for = "demoScale">Select Scale: </label>
-            <select name= "demoScale" id="demoScale">
-                    <option value="Pyth">Pyth</option>
-                    <option value="12-tet">12-tet</option>
-                    <option value="53-tet">53-tet</option>
-                    <option value="Zarl_4">Zarl_4</option>
-                    <option value="Zarl_7">Zarl_7</option>
-                    <option value="Synth">Synth</option>
-            </select>
-            </fieldset><br />
-
-           
-
-        </form>
+        </form> <br />
 
      </div>
      </div>
@@ -80,9 +54,7 @@
 <!-- uncomment lines below to include extra p5 libraries -->
 <!--<script language="javascript" type="text/javascript" src="js/p5.dom.js"></script> -->
 <!-- <script language="javascript" type="text/javascript" src="js/p5.sound.js"></script> -->
-
-<script language="javascript" type="text/javascript" src="js/p5.gibber.min.js"></script> 
-<script language="javascript" type="text/javascript" src="js/synth_gibber.js"></script>
+<script language="javascript" type="text/javascript" src="js/synth.js"></script>
 <script language="javascript" type="text/javascript" src="js/sketch.js"></script>
 
 </body>

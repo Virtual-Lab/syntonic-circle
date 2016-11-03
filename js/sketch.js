@@ -11,9 +11,68 @@ var soundFreq = document.getElementById("soundFreq");
 var soundFreqSet = document.getElementById("soundFreqSet");
 var soundOn = document.getElementById("soundOn");
 var soundOff = document.getElementById("soundOff");
-var soundSelect = document.getElementById("soundSelect");
-var demoPlay = document.getElementById("demoPlay");
-var demoScale = document.getElementById("demoScale");
+
+scale = [[0, 0], [-1, 2], [-2, 1], [1, -1], [0, 1], [-1, 0], [-2, 2], [1, 0], [0, 2], [-1, 1], [2, -1], [1, 1]]; // chromatic scale --> Holder
+
+melody = [[-1, -1], 
+  [-1,24],[-1,28],[-1,31],[-1,28],[-1,24],[-1,31],[-1,28],[-1,24],[-1,36],
+  [7,35],[11,35],[14,31],[11,38],[7,35],[14,31],[11,38],[7,35],[17,31], 
+  [16,36],[16,31],[12,28],[19,34],[16,31],[12,28],[19,34],[16,31],[12,28],
+  [17,33],[21,29],[17,26],[14,23],[17,26],[14,29],[11,33],[12,31],[14,29],
+  [16,31],[16,31],[-1,-1], // + 1 semitone
+  [-1,25],[-1,29],[-1,32],[-1,29],[-1,25],[-1,32],[-1,29],[-1,25],[-1,37],
+  [8,36],[12,36],[15,32],[12,39],[8,36],[15,32],[13,39],[8,36],[18,32], 
+  [17,37],[17,32],[13,29],[20,35],[17,32],[13,29],[20,35],[17,32],[13,29],
+  [18,34],[22,30],[18,27],[15,24],[18,27],[15,30],[12,34],[13,32],[15,30],
+  [17,32],[17,32],[-1,-1],[-1,-1],[-1,-1]]; 
+
+
+function soundSetting () {
+
+  selection.addEventListener("submit", function(event) {
+     event.preventDefault()}, false);
+
+  soundFreq.addEventListener("input", function(event) {
+    event.preventDefault();
+    f0 = event.target.value;
+    soundFreqSet.value = f0;
+    console.log("BaseFreq: ", f0)
+  }, false);
+
+  soundFreqSet.addEventListener("input", function(event) {
+    event.preventDefault();
+    value = event.target.value;
+    f0 = value;
+    soundFreq.value = value;
+  }, false);
+
+  soundOn.onclick = function () { 
+    audioSwitch();
+  };
+    
+}
+
+function audioSwitch() {
+
+  if (!audio) {
+    for (var k=0; k < sdots.length; k++) { 
+      tones[k] = [];
+      for(var i = 0; i < melody[0].length; i++){
+        tones[k][i] = new Sound();
+      };
+  };
+    audio = true;
+    soundOn.value = "on";
+  } else {
+    tones = undefined;
+    delete window['Sound'];
+
+    tones = []; 
+    audio = false;
+    soundOn.value = "off";
+  }
+
+}
 
 function SDot (x, y, o) {
 
@@ -104,15 +163,15 @@ function SDot (x, y, o) {
 
     this.sw_on = function (k, i, time) {
 
-      if(this.on == 0) tones[i].play(f0*this.c_freq*Math.pow(2, this.c_octave), time); 
+      if(this.on == 0) tones[k][i].play(f0*this.c_freq*Math.pow(2, this.c_octave), time); 
       this.on=1;
 
       console.log("Play tone - scale ", k, "tone, ", i, "Freq: ", this.c_freq);
     };
     
     this.sw_off = function (k, i, time) {
-      if (time) tones[i].hold = false;
-      if(this.on == 1 && !tones[i].hold) tones[i].stop();
+      if (time) tones[k][i].hold = false;
+      if(this.on == 1 && !tones[k][i].hold) tones[k][i].stop();
       this.on = 0;
       //console.log("Tone stopped - scale: ", k, "tone",i, "Freq: ", this.c_freq);
     };
@@ -129,86 +188,6 @@ function SDot (x, y, o) {
       this.c_octave = d;
     }
 };
-
-function soundSetting () {
-
-  selection.addEventListener("submit", function(event) {
-     event.preventDefault()}, false);
-
-  soundFreq.addEventListener("input", function(event) {
-    event.preventDefault();
-    f0 = event.target.value;
-    soundFreqSet.value = f0;
-    console.log("BaseFreq: ", f0)
-  }, false);
-
-  soundFreqSet.addEventListener("input", function(event) {
-    event.preventDefault();
-    value = event.target.value;
-    f0 = value;
-    soundFreq.value = value;
-  }, false);
-
-  soundSelect.onchange = function () { 
-    Synthesizer.choose = soundSelect.selectedIndex;
-    
-    tones = undefined;
-    delete window['Sound'];
-    //dots = new Array(scale.length);
-    tones = new Array(melody[0].length);
-    
-    console.log('Init soundSelect: ', soundSelect.value)
-    Synthesizer.init(Synthesizer.choose); 
-
-    
-    for(var i = 0; i < melody[0].length; i++){
-        tones[i] = new Sound();
-        //tones[k][i].controller();
-    }
-    
-    
-  }
-
-  // soundFreqSet.addEventListener("keydown", function(e) {
-  //   element = e.target;
-  // if(e.keyCode == 13) { 
-  //   console.log("Enter and submit");
-  //   event.preventDefault();
-  //   // enter key was pressed
-  //   // run own code
-  //   return false; // prevent execution of rest of the script + event propagation / event bubbling + prevent default behaviour
-  //   }
-  // }, false);
-
-  // 
-
-  soundOn.onclick = function () { 
-    audioSwitch();
-  };
-
-  demoPlay.onclick = function () {
-    demo = true;
-  }
-}
-
-function audioSwitch() {
-
-   if (!audio) {
-    for(var i = 0; i < melody[0].length; i++) {
-      tones[i] = new Sound();
-      //tones[k][i].controller();
-    };
-    audio = true;
-    soundOn.value = "on";
-  } else {
-    tones = undefined;
-    delete window['Sound'];
-    tones = new Array(melody[0].length);
-    audio = false;
-    soundOn.value = "off";
-  }
-
-}
 
 function setup() {
 
@@ -230,10 +209,12 @@ function setup() {
   [18,34],[22,30],[18,27],[15,24],[18,27],[15,30],[12,34],[13,32],[15,30],
   [17,32],[17,32],[-1,-1],[-1,-1],[-1,-1]]; 
 
-  sdots = new Array(scale.length); // new SDot[scale.length];
-  tones = new Array(melody[0].length); // new Osc[scale.length][melody[0].length];
 
-  audio = true;
+  sdots = new Array(scale.length); // new SDot[scale.length];
+  tones = new Array(scale.length); // new Osc[scale.length][melody[0].length];
+
+  for (i= 0; i < scale.length; i++) tones[i] = [];
+
   TWO_PI = 2*Math.PI;
 
   f0 = 180; // reference frequence
@@ -257,10 +238,10 @@ function setup() {
   // It is necessary for p5js with global variables to define them in setup or draw
   // -------------------------------------------------------------------------------------
 
+  Synthesizer.init();
   soundSetting();
-  Synthesizer.init(0);
 
-  var diagram = createCanvas(700, 600);
+  var diagram = createCanvas(600, 600);
   
   diagram.parent("diagram");
   
@@ -271,13 +252,17 @@ function setup() {
   for (var k=0; k < sdots.length; k++) { 
 
     sdots[k] = new SDot(scale[k][0], scale[k][1], 0);
+
+    for(var i = 0; i < melody[0].length; i++){
+      tones[k][i] = new Sound();
+    }
   };
 
-  for(var i = 0; i < melody[0].length; i++) {
-      tones[i] = new Sound();
+  for (var k=0; k < sdots.length; k++) { 
+    console.log("sdots: ", sdots[k].frs);
   };
 
-}
+};
 
 function draw () {
 
@@ -292,7 +277,7 @@ function draw () {
 
     // look if distance is less than 7 pixels
     if (dist(20, yM + rs[j], mouseX, mouseY) < 7) {
-      
+      tones
       // if time = 0 (Circle through frames, half secound)
       if ( t == 0) {
         //console.log("Play Melody", rs, playk, m_k);
@@ -349,8 +334,8 @@ function draw () {
       text(descr[sdots[k].c_scale], 50, 60);
       for (var j = 0; j < rs.length; j++) {
         fill(hues[j], 359, 359);
-        // text(descr[j] + " : " + sdots[k].frs[j], 490 + n_t*100, yM - rs[j]);
-        text(descr[j] + " : " + Math.round(1000*sdots[k].frs[j])/1000., 420 + n_t*80, yM - rs[j]);
+        //text(descr[j] + " : " + sdots[k].frs[j], 490 + n_t*100, yM - rs[j]);
+        //text(descr[j] + " : " + Math.round(1000*sdots[k].frs[j])/1000., 420 + n_t*80, yM - rs[j]);
       }
       fill(0, 359, 359);
     } else {
