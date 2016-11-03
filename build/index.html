@@ -9,32 +9,41 @@
     <link href="css/styles.css" rel="stylesheet" media="all">
 
     <!-- Script für html5 für ältere Browser -->
-
-    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->    
 
 </head>
 <body>
+	
+    <div id="wrap">
 
-	<div id="wrap">
+    <div id="diagram"> 
 
-	<div id="diagram">
+    <!-- <h2 class="label">Pitch-Diagram</h2> -->
+    
+    </div>
 
-	<h2>Pitch-Diagram</h2>
-
-	</div>
-
-	<aside role = "aside" id ="synth">
+    <div id = "response">
+    <div id = "synth">
         <form id="selection">
 
-            <h3>Sound Settings</h3>
+            <h3>Settings</h3>
 
-            <p>Please enter the Base-Frequency:</p>
+            <fieldset class = "fieldset"><legend>Audio</legend>
+        
+            <input type="button" name="soundOn" id="soundOn" value="on"> 
+            <span id="instructions"></span><br />
 
-            <input id="gfreq" type="text" name="baseFreq" size = "20" value="220">
-            <input type="submit" value = "set" id = "setFreq">
-        </form>
 
-     </aside>
+            <label for="soundFreq">Base-Frequency: </label>
+            <input type="range" name="soundFreq" id="soundFreq" min= "0" max= "800" value="180">
+            <input type="text" name= "soundFreqSet" id="soundFreqSet" size = "5" value = "180" ><span id="instructions">Hz</span><br />
+            </fieldset> 
+
+        </form> <br />
+
+     </div>
+     </div>
 
      </div>
 

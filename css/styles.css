@@ -52,7 +52,10 @@
     }
 
      #response {
+      padding: 1rem;
       float: left;
+      background-color: #eee;
+      min-width: 400px;
     }
 
     /* Default link styling */

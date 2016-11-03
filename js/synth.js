@@ -112,6 +112,7 @@ Synthesizer.view.draw = function (name, element) {
   for (i=0;i<20;i++) { zeile[i] = document.createElement('BR');};
 
   legend.appendChild(legendName);
+  field.className = "fieldset";
   field.appendChild(legend);
 
   // console.log('Settings: ',elements, 'length: ', elements.length);
@@ -132,7 +133,7 @@ Synthesizer.view.draw = function (name, element) {
 
   // append the section to the synthesizer
   this.synthesizer.appendChild(field);
-  this.synthesizer.appendChild(zeile[0]);
+  this.synthesizer.appendChild(zeile[0  ]);
 
 }
 
