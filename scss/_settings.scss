@@ -20,7 +20,7 @@ $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
 $black: #0a0a0a;
 $white: #fefefe;
-$body-background: rgb(253, 251, 245);
+$body-background: rgb(253, 253, 253);
 $body-font-color: $black;
 $body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 $body-antialiased: true;
@@ -46,6 +46,52 @@ $header-font-weight: 300;
 $header-color: #444444;
 
 
+// 19. Forms
+// ---------
+
+$fieldset-border: 1px solid $medium-gray;
+$fieldset-padding: rem-calc(10);
+$fieldset-margin: rem-calc(10 0);
+$legend-padding: rem-calc(0 3);
+$form-spacing: rem-calc(10);
+$helptext-color: $black;
+$helptext-font-size: rem-calc(13);
+$helptext-font-style: italic;
+$input-prefix-color: $black;
+$input-prefix-background: $light-gray;
+$input-prefix-border: 1px solid $medium-gray;
+$input-prefix-padding: 1rem;
+$form-label-color: $black;
+$form-label-font-size: rem-calc(14);
+$form-label-font-weight: $global-weight-normal;
+$form-label-line-height: 1.4;
+$select-background: $white;
+$select-triangle-color: $dark-gray;
+$select-radius: $global-radius;
+$input-color: $black;
+$input-placeholder-color: $medium-gray;
+$input-font-family: inherit;
+$input-font-size: rem-calc(16);
+$input-background: $white;
+$input-background-focus: $white;
+$input-background-disabled: $light-gray;
+$input-border: 1px solid $medium-gray;
+$input-border-focus: 1px solid $dark-gray;
+$input-shadow: inset 0 1px 2px rgba($black, 0.1);
+$input-shadow-focus: 0 0 5px $medium-gray;
+$input-cursor-disabled: default;
+$input-transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+$input-number-spinners: true;
+$input-radius: $global-radius;
+
+// 20. Label
+// ---------
+
+$label-background: $primary-color;
+$label-color: foreground($label-background);
+$label-font-size: 0.8rem;
+$label-padding: 0.33333rem 0.5rem;
+$label-radius: $global-radius;
 
 // 22. Menu
 // --------
@@ -63,7 +109,7 @@ $menu-icon-spacing: 0.25rem;
 
 $slider-width-vertical: 0.5rem;
 $slider-transition: all 0.2s ease-in-out; // 0.0 -> disable transition
-$slider-height: 0.3rem;
+$slider-height: 0.25rem;
 $slider-background: $light-gray;
 $slider-fill-background: $medium-gray;
 $slider-handle-height: 1.0rem;

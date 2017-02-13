@@ -23,18 +23,44 @@
       font-size: 0.75rem;
     }
 
+    /* ----------------------------------------------------------
+    * Styling the form  
+    * ----------------------------------------------------------*/
+
+    label {
+      padding: 0 5px 0 0;
+      vertical-align: middle;
+      float: left;
+    }
+
+    input[type=range] {
+      width: 68%;
+      padding: 0 1%;
+    }
+
+    input[type=text] {
+      width: 28%;
+      float: left;
+    }
+
+    input[type=select] {
+      width: 28%;
+      float: left;
+    }
+
+    input[type=button] {
+      width: 28%;
+    }
+
+  /* ----------------------------------------------------------
+   * Styling the Layout 
+   * ----------------------------------------------------------*/
+
     header {
       padding: 1rem;
       float: left;
       background-color: #ddd;
       width: 100%;
-    }
-
-    aside {
-      padding: 1rem;
-      float: left;
-      background-color: #eee;
-      min-width: 400px;
     }
 
     footer {
@@ -51,11 +77,11 @@
       float: left;
     }
 
-     #response {
+    #response {
       padding: 1rem;
       float: left;
       background-color: #eee;
-      min-width: 400px;
+      min-width: 500px;
     }
 
     /* Default link styling */

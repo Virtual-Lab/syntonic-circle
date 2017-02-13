@@ -24,25 +24,27 @@
     </div>
 
     <div id = "response">
-    <div id = "synth">
-        <form id="selection">
+        <div id = "synth">
 
-            <h3>Settings</h3>
+            <form id="selection">
 
-            <fieldset class = "fieldset"><legend>Audio</legend>
-        
-            <input type="button" name="soundOn" id="soundOn" value="on"> 
-            <span id="instructions"></span><br />
+                <h3>Settings</h3>
+
+                <fieldset class = "fieldset"><legend>Audio</legend>
+            
+                <input type="button" name="soundOn" id="soundOn" value="on"> 
+                <span id="instructions"></span><br />
 
 
-            <label for="soundFreq">Base-Frequency: </label>
-            <input type="range" name="soundFreq" id="soundFreq" min= "0" max= "800" value="180">
-            <input type="text" name= "soundFreqSet" id="soundFreqSet" size = "5" value = "180" ><span id="instructions">Hz</span><br />
-            </fieldset> 
+                <label for="soundFreq">Base-Frequency (Hz):</label><br />
+                <input type="range" name="soundFreq" id="soundFreq" min= "0" max= "800" value="180" class="small-9 columns">
+                <input type="text" name= "soundFreqSet" id="soundFreqSet" size = "4" value = "180" class="small-3 columns" >
+                
+                </fieldset>  
 
-        </form> <br />
+            </form> 
 
-     </div>
+         </div>
      </div>
 
      </div>
