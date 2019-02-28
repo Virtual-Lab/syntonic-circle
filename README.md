@@ -7,4 +7,5 @@ To develope run<br />
 <code>npm install</code><br />
 <code>npm start</code>
 
+starts server at port http://localhost:3000
 Uses node version 6.*
