@@ -2,6 +2,7 @@
 
 site is published here:<br />
 https://virtual-lab.github.io/syntonic-circle/<br />
+http://sound-colour-space.zhdk.ch/virtuallab/chromatic-scales<br />
 
 To develope run<br />
 <code>npm install</code><br />
